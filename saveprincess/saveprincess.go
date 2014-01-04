@@ -1,0 +1,185 @@
+package main
+
+import (
+	"bufio"
+	"bytes"
+	"fmt"
+	"io"
+	"log"
+	"os"
+	"strconv"
+	"strings"
+)
+
+type Game struct {
+	Size     int
+	Bot      Bot
+	Princess Princess
+	Board    Board
+}
+
+type Bot struct {
+	X int
+	Y int
+}
+
+type Princess struct {
+	X int
+	Y int
+}
+
+type Board [][]byte
+
+func (b Board) String() string {
+	var rows []string
+
+	for _, row := range b {
+		rows = append(rows, " "+string(row))
+	}
+
+	return strings.Join(rows, "\n")
+}
+
+func (g *Game) Show() {
+	fmt.Println("Size:", g.Size, "x", g.Size)
+	fmt.Println("Bot:", g.Bot)
+	fmt.Println("Princess:", g.Princess)
+	fmt.Println("Board:\n")
+	fmt.Println(g.Board, "\n")
+}
+
+func (g *Game) FoundPrincess() bool {
+	if g.Bot.X == g.Princess.X && g.Bot.Y == g.Princess.Y {
+		return true
+	} else {
+		return false
+	}
+}
+
+func (g *Game) NextMove() string {
+	// Same line
+	if g.Bot.Y == g.Princess.Y {
+		if g.Bot.X > g.Princess.X {
+			g.Bot.X = g.Bot.X - 1
+			return "LEFT"
+		} else {
+			g.Bot.X = g.Bot.X + 1
+			return "RIGHT"
+		}
+	}
+
+	// Same column
+	if g.Bot.X == g.Princess.X {
+		if g.Bot.Y > g.Princess.Y {
+			g.Bot.Y = g.Bot.Y - 1
+			return "UP"
+		} else {
+			g.Bot.Y = g.Bot.Y + 1
+			return "DOWN"
+		}
+	}
+
+	if g.Bot.Y > g.Princess.Y {
+		g.Bot.Y = g.Bot.Y - 1
+		return "UP"
+	} else {
+		g.Bot.Y = g.Bot.Y + 1
+		return "DOWN"
+	}
+
+	if g.Bot.X > g.Princess.X {
+		g.Bot.X = g.Bot.X - 1
+		return "LEFT"
+	} else {
+		g.Bot.X = g.Bot.X + 1
+		return "RIGHT"
+	}
+
+	return "STAY"
+}
+
+func main() {
+	game := setupGame()
+
+	game.Show()
+
+	for {
+		if game.FoundPrincess() {
+			break
+		}
+
+		fmt.Println(game.NextMove())
+	}
+}
+
+func setupGame() Game {
+	reader := bufio.NewReader(os.Stdin)
+
+	size := getInt(nextLine(reader))
+
+	bot := getBot(size)
+
+	board, princess := getBoardAndPrincess(reader)
+
+	return Game{size, bot, princess, board}
+}
+
+func getBoardAndPrincess(reader *bufio.Reader) (Board, Princess) {
+
+	board := Board{}
+	princess := Princess{}
+
+	y := 0
+
+	for {
+		line, _, err := reader.ReadLine()
+
+		if err == io.EOF {
+			break
+		}
+
+		handleError(err)
+
+		x := bytes.Index(line, []byte("p"))
+
+		if x > -1 {
+			// Found the princess!
+			princess.X = x
+			princess.Y = y
+		}
+
+		y++
+
+		board = append(board, line)
+	}
+
+	return board, princess
+}
+
+func getBot(size int) Bot {
+	xy := (size - 1) / 2
+
+	return Bot{xy, xy}
+}
+
+func getInt(bytes []byte) int {
+	i, err := strconv.Atoi(string(bytes))
+
+	handleError(err)
+
+	return i
+}
+
+func nextLine(reader *bufio.Reader) []byte {
+	line, _, err := reader.ReadLine()
+
+	handleError(err)
+
+	return line
+}
+
+func handleError(err error) {
+	if err != nil {
+		log.Fatalln("Error:", err)
+	}
+}
