@@ -9,6 +9,7 @@ Hacking on code, just for fun :)
  * [Bash](http://www.gnu.org/software/bash/)
  * [Rerun](https://github.com/alexch/rerun/)
  * [Go](http://golang.org/)
+ * [Leiningen](http://leiningen.org/) (For Clojure)
 
 ## Running the challenges
 
