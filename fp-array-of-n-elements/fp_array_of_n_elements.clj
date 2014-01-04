@@ -4,7 +4,7 @@
 ;; Runner, similar to how HackerRank wraps the solution.
 (defn run [solution] (
   let [input (line-seq (java.io.BufferedReader. *in*))] (
-    println (solution (read-string (first input)))
+    println(count(solution (Integer. (first input))))
   )
 ))
 
