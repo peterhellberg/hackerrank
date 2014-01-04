@@ -1,8 +1,8 @@
-[![HackerRank](http://assets.c7.se/skitch/HackerRank-20140104-140846.png)](https://hackerrank.com/)
-
 # Solutions to HackerRank challenges.
 
 Hacking on code, just for fun :)
+
+[![HackerRank](http://assets.c7.se/skitch/HackerRank-20140104-140846.png)](https://hackerrank.com/)
 
 ## Dependencies
 
