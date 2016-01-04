@@ -7,12 +7,12 @@ Hacking on code, just for fun :)
 ## Dependencies
 
  * [Bash](http://www.gnu.org/software/bash/)
- * [Rerun](https://github.com/alexch/rerun/)
+ * [Spy](https://github.com/jpillora/spy)
  * [Go](http://golang.org/)
  * [Leiningen](http://leiningen.org/) (For Clojure)
 
 ## Running the challenges
 
 ```bash
-	./rerun.sh <challenge> [variant]
+	./spy.sh <challenge> [variant]
 ```

@@ -3,12 +3,12 @@
 SCRIPT_DIR=$(cd $(dirname "$0"); pwd)
 
 function runChallenge {
-  rerun -c -x -b -p "$1/**/*" -- ./$1/run.sh $SCRIPT_DIR/$1 $2
+  spy -c c --dir "$1" ./$1/run.sh $SCRIPT_DIR/$1 $2
 }
 
-if which rerun >/dev/null; then
+if which spy >/dev/null; then
   if [[ -z "$1" ]]; then
-    echo "Usage: ./rerun <challenge> [variant]"
+    echo "Usage: ./spy.sh <challenge> [variant]"
     exit
   fi
 
@@ -20,5 +20,5 @@ if which rerun >/dev/null; then
 
   runChallenge $1 $SCRIPT_NAME
 else
-  echo "You need to install rerun"
+  echo "You need to install spy: go get -v github.com/jpillora/spy"
 fi
