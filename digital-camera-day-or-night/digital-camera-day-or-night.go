@@ -5,19 +5,13 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"image/png"
 	"io"
-	"io/ioutil"
 	"os"
 	"strings"
 )
 
 func main() {
-	m := readImage(os.Stdin)
-
-	saveImage(m)
-
-	fmt.Println(dayOrNight(m))
+	fmt.Println(dayOrNight(readImage(os.Stdin)))
 }
 
 func dayOrNight(m *image.RGBA) string {
@@ -70,16 +64,4 @@ func readImage(r io.Reader) *image.RGBA {
 	}
 
 	return m
-}
-
-func saveImage(m *image.RGBA) {
-	if os.Getenv("DEBUG") == "true" {
-		prefix := "digital-camera-day-or-night-"
-
-		if file, err := ioutil.TempFile("/tmp/", prefix); err == nil {
-			defer file.Close()
-			png.Encode(file, m)
-			fmt.Fprintln(os.Stderr, file.Name())
-		}
-	}
 }
