@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestNewState(t *testing.T) {
+func TestNewPiles(t *testing.T) {
 	for _, tt := range []struct {
 		r    io.Reader
 		want int
@@ -20,10 +20,10 @@ func TestNewState(t *testing.T) {
 		{strings.NewReader("5 3 4\n3 2 1 1 1\n4 3 2\n1 1 4 1\n"), 5},
 		{strings.NewReader(input06), 1826592},
 	} {
-		input := newPiles(tt.r)
+		piles := newPiles(tt.r)
 
-		if got := input.EqualHeight(); got != tt.want {
-			t.Fatalf("input.EqualHeight() = %d, want %d", got, tt.want)
+		if got := piles.EqualHeight(); got != tt.want {
+			t.Fatalf("piles.EqualHeight() = %d, want %d", got, tt.want)
 		}
 	}
 }
