@@ -115,6 +115,8 @@ func run() {
 		imd.Draw(win)
 		win.Update()
 	}
+
+	fmt.Println(p.EqualHeight())
 }
 
 func main() {
