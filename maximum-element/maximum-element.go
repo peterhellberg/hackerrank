@@ -54,7 +54,7 @@ func (q queries) Run(w io.Writer) {
 		case delete:
 			s.Pop()
 		case print:
-			fmt.Fprintln(w, s.Peek())
+			fmt.Fprintln(w, s.Max())
 		}
 	}
 }
@@ -63,6 +63,18 @@ type stack struct {
 	// You could have a mutex here if you need the stack to be thread safe
 	items []int
 	size  int
+}
+
+func (s *stack) Max() int {
+	var max int = -1
+
+	for i, item := range s.items {
+		if i == 0 || item > max {
+			max = item
+		}
+	}
+
+	return max
 }
 
 func (s *stack) Peek() int {
