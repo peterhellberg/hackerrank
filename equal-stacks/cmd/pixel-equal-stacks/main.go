@@ -34,20 +34,28 @@ func run() {
 
 	hc := color.RGBA{0xFF, 0xFF, 0xFF, 0xFF}
 
+	if p.Equal() {
+		hc = color.RGBA{0x75, 0xEF, 0x5B, 0xFF}
+	}
+
 	for !win.Closed() {
 		win.SetClosed(win.JustPressed(pixelgl.KeyEscape) || win.JustPressed(pixelgl.KeyQ))
 
-		win.Clear(color.RGBA{0xBB, 0xBB, 0xBB, 0xFF})
+		if win.JustPressed(pixelgl.KeySpace) {
+			if !p.Equal() {
+				p.Tallest().Pop()
 
-		if win.JustPressed(pixelgl.KeySpace) && !p.Equal() {
-			p.Tallest().Pop()
+				eh = p.Tallest().height
 
-			eh = p.Tallest().height
-
-			if p.Equal() {
-				hc = color.RGBA{0x75, 0xEF, 0x5B, 0xFF}
+				if p.Equal() {
+					hc = color.RGBA{0x75, 0xEF, 0x5B, 0xFF}
+				}
+			} else {
+				win.SetClosed(true)
 			}
 		}
+
+		win.Clear(color.RGBA{0xBB, 0xBB, 0xBB, 0xFF})
 
 		imd.Clear()
 		imd.Color = hc
