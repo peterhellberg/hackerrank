@@ -34,28 +34,10 @@ func run() {
 
 	hc := color.RGBA{0xFF, 0xFF, 0xFF, 0xFF}
 
-	if p.Equal() {
-		hc = color.RGBA{0x75, 0xEF, 0x5B, 0xFF}
-	}
-
-	for !win.Closed() {
-		win.SetClosed(win.JustPressed(pixelgl.KeyEscape) || win.JustPressed(pixelgl.KeyQ))
-
-		if win.JustPressed(pixelgl.KeySpace) {
-			if !p.Equal() {
-				p.Tallest().Pop()
-
-				eh = p.Tallest().height
-
-				if p.Equal() {
-					hc = color.RGBA{0x75, 0xEF, 0x5B, 0xFF}
-				}
-			} else {
-				win.SetClosed(true)
-			}
+	update := func() {
+		if p.Equal() {
+			hc = color.RGBA{0x75, 0xEF, 0x5B, 0xFF}
 		}
-
-		win.Clear(color.RGBA{0xBB, 0xBB, 0xBB, 0xFF})
 
 		imd.Clear()
 		imd.Color = hc
@@ -119,6 +101,26 @@ func run() {
 			imd.Push(pixel.V(20+2*cw, hu), pixel.V(3*cw, hu+cu))
 			imd.Rectangle(6)
 		}
+	}
+
+	update()
+
+	for !win.Closed() {
+		win.SetClosed(win.JustPressed(pixelgl.KeyEscape) || win.JustPressed(pixelgl.KeyQ))
+
+		if win.JustPressed(pixelgl.KeySpace) {
+			if !p.Equal() {
+				p.Tallest().Pop()
+
+				eh = p.Tallest().height
+
+				update()
+			} else {
+				win.SetClosed(true)
+			}
+		}
+
+		win.Clear(color.RGBA{0xBB, 0xBB, 0xBB, 0xFF})
 
 		imd.Draw(win)
 		win.Update()
