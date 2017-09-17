@@ -45,16 +45,26 @@ func newQueries(r io.Reader) queries {
 }
 
 func (q queries) Run(w io.Writer) {
-	s := &stack{}
+	m := &stack{}
 
 	for _, query := range q {
 		switch query.cmd {
 		case push:
-			s.Push(query.arg)
+			if m.Empty() {
+				m.Push(query.arg)
+			} else {
+				if query.arg > m.Peek() {
+					m.Push(query.arg)
+				} else {
+					m.Push(m.Peek())
+				}
+			}
 		case delete:
-			s.Pop()
+			if !m.Empty() {
+				m.Pop()
+			}
 		case print:
-			fmt.Fprintln(w, s.Max())
+			fmt.Fprintln(w, m.Peek())
 		}
 	}
 }
@@ -65,20 +75,12 @@ type stack struct {
 	size  int
 }
 
-func (s *stack) Max() int {
-	var max int = -1
-
-	for i, item := range s.items {
-		if i == 0 || item > max {
-			max = item
-		}
-	}
-
-	return max
+func (s *stack) Empty() bool {
+	return s.size == 0
 }
 
 func (s *stack) Peek() int {
-	if s.size == 0 {
+	if s.Empty() {
 		return -1
 	}
 
@@ -86,7 +88,7 @@ func (s *stack) Peek() int {
 }
 
 func (s *stack) Pop() int {
-	if s.size == 0 {
+	if s.Empty() {
 		return -1
 	}
 
