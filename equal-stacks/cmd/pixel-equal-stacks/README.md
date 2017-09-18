@@ -1,6 +1,14 @@
 # pixel-equal-stacks
 
+<https://www.hackerrank.com/challenges/equal-stacks>
+
 Press `space` to remove the top cylinder.
+
+## Installation
+
+```bash
+go get -u github.com/peterhellberg/hackerrank/equal-stacks/cmd/pixel-equal-stacks
+```
 
 ## Example
 
