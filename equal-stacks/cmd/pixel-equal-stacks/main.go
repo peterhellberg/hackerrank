@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"image/color"
 	"io"
@@ -12,8 +13,10 @@ import (
 	"github.com/faiface/pixel/pixelgl"
 )
 
+var w, h int
+
 func run() {
-	var fw, fh = float64(640), float64(360)
+	var fw, fh = float64(w), float64(h)
 
 	win, err := pixelgl.NewWindow(pixelgl.WindowConfig{
 		Bounds:      pixel.R(0, 0, fw, fh),
@@ -130,6 +133,11 @@ func run() {
 }
 
 func main() {
+	flag.IntVar(&w, "w", 640, "Width")
+	flag.IntVar(&h, "h", 360, "Height")
+
+	flag.Parse()
+
 	pixelgl.Run(run)
 }
 
